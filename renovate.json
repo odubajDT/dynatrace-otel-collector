@@ -3,18 +3,11 @@
   "extends": [
     "config:base"
   ],
-  "enabledManagers": ["github-actions"],
   "labels": ["dependencies"],
   "packageRules": [
     {
       "matchPackagePatterns": ["^(go\\.opentelemetry\\.io/collector|github\\.com/open-telemetry/opentelemetry-collector-contrib)"],
       "groupName": "OpenTelemetry Collector"
-    },
-    {
-      "matchManagers": ["github-actions"],
-      "addLabels": ["github_actions"],
-      "groupName": "github actions",
-      "groupSlug": "github-actions"
     },
     {
       "matchPackageNames": ["kubernetes-sigs/kind"]
