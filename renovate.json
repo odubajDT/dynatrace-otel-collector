@@ -3,10 +3,17 @@
   "extends": [
     "config:base",
     "config:recommended",
-    "schedule:nonOfficeHours",
-    "group:kubernetes"
+    "schedule:nonOfficeHours"
   ],
   "labels": ["dependencies"],
+  "prConcurrentLimit": 25,
+  "minimumReleaseAge": "3 days",
+  "timezone": "Europe/Vienna",
+  "rebaseWhen": "conflicted",
+  "postUpdateOptions": [
+    "gomodTidy",
+    "gomodMassage"
+  ],
   "packageRules": [
     {
       "matchPackagePatterns": ["^(go\\.opentelemetry\\.io/collector|github\\.com/open-telemetry/opentelemetry-collector-contrib)"],
