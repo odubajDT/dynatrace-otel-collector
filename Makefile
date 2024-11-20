@@ -19,7 +19,7 @@ BIN = $(BIN_DIR)/dynatrace-otel-collector
 MAIN = $(BUILD_DIR)/main.go
 
 # renovate: datasource=github-releases depName=jstemmer/go-junit-report
-GO_JUNIT_REPORT_VERSION?=v2.0.0
+GO_JUNIT_REPORT_VERSION?=v2.1.0
 
 # Files to be copied directly from the project root
 CP_FILES = LICENSE README.md
