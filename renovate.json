@@ -23,7 +23,7 @@
       "matchPackageNames": ["kubernetes/kubernetes"]
     },
     {
-      "matchPackageNames": ["tcort/markdown-link-check"],
+      "matchPackageNames": ["tcort/markdown-link-check"]
     }
   ],
   "regexManagers": [
