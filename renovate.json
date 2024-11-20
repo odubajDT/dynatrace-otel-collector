@@ -3,11 +3,36 @@
   "extends": [
     "config:base"
   ],
+  "enabledManagers": ["github-actions"],
   "labels": ["dependencies"],
   "packageRules": [
     {
       "matchPackagePatterns": ["^(go\\.opentelemetry\\.io/collector|github\\.com/open-telemetry/opentelemetry-collector-contrib)"],
       "groupName": "OpenTelemetry Collector"
+    },
+    {
+      "description": "Update kubernetes-sigs/kind version from GitHub releases",
+      "matchManagers": ["github-actions"],
+      "matchPackageNames": ["kubernetes-sigs/kind"],
+      "datasource": "github-releases",
+      "depName": "kubernetes-sigs/kind",
+      "enabled": true
+    },
+    {
+      "description": "Update kubernetes/kubernetes version from GitHub releases",
+      "matchManagers": ["github-actions"],
+      "matchPackageNames": ["kubernetes/kubernetes"],
+      "datasource": "github-releases",
+      "depName": "kubernetes/kubernetes",
+      "enabled": true
+    },
+    {
+      "description": "Update tcort/markdown-link-check version from GitHub releases",
+      "matchManagers": ["github-actions"],
+      "matchPackageNames": ["tcort/markdown-link-check"],
+      "datasource": "github-releases",
+      "depName": "tcort/markdown-link-check",
+      "enabled": true
     }
   ],
   "regexManagers": [
