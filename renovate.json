@@ -8,15 +8,21 @@
     {
       "matchPackagePatterns": ["^(go\\.opentelemetry\\.io/collector|github\\.com/open-telemetry/opentelemetry-collector-contrib)"],
       "groupName": "OpenTelemetry Collector"
-    },
+    }
+  ],
+  "customManagers": [
     {
-      "matchPackageNames": ["kubernetes-sigs/kind"]
-    },
-    {
-      "matchPackageNames": ["kubernetes/kubernetes"]
-    },
-    {
-      "matchPackageNames": ["tcort/markdown-link-check"]
+      "customType": "regex",
+      "fileMatch": [
+        "(^|\\/)Makefile$",
+        "(^|\\/)Dockerfile",
+        "(^|\\/).*\\.ya?ml$",
+        "(^|\\/).*\\.toml$",
+        "(^|\\/).*\\.sh$"
+      ],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>.+?) depName=(?<depName>.+?)\\s.*?_VERSION ?(:|=|\\?=|:=|\\+=) ?\\\"?(?<currentValue>.+?)?\\\"?\\s"
+      ]
     }
   ],
   "regexManagers": [
