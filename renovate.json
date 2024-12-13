@@ -58,11 +58,10 @@
       ],
       "depNameTemplate": "Dynatrace/dynatrace-otel-collector",
       "matchStrings": [
-        "ghcr.io\/dynatrace\/dynatrace-otel-collector\/dynatrace-otel-collector?(:|=|\\?=|:=|\\+=) ?\\\"?(?<currentValue>.+?)?\\\"?\\s",
-        "ghcr.io\/dynatrace\/dynatrace-otel-collector\/dynatrace-otel-collector(\\)s* tag:\\s?\\\"?(?<currentValue>.+?)?\\\"?\\s",
-        "public.ecr.aws\/dynatrace\/dynatrace-otel-collector?(:|=|\\?=|:=|\\+=) ?\\\"?(?<currentValue>.+?)?\\\"?\\s",
-        "https:\/\/github.com\/Dynatrace\/dynatrace-otel-collector\/releases\/?\\\"?(?<currentValue>.+?)?\\\"?\\s",
-        "DT_OTEL_COLLECTOR_VERSION?(:|=|\\?=|:=|\\+=) ?\\\"?(?<currentValue>.+?)?\\\"?\\s"
+        "\\\"*ghcr.io\/dynatrace\/dynatrace-otel-collector\/dynatrace-otel-collector:(?<currentValue>.+?)?\\\"*($|\\s)",
+        "ghcr.io\/dynatrace\/dynatrace-otel-collector\/dynatrace-otel-collector\\s* tag:\\s?\\\"*(?<currentValue>.+?)?\\\"*($|\\s)",
+        "\\\"*public.ecr.aws\/dynatrace\/dynatrace-otel-collector:(?<currentValue>.+?)?\\\"*($|\\s)",
+        "https:\/\/github\\.com\/Dynatrace\/dynatrace-otel-collector\/releases\/(?<currentValue>.+?)?($|\\s)"
       ]
     },
     {
@@ -73,7 +72,7 @@
       ],
       "depNameTemplate": "open-telemetry/opentelemetry-collector",
       "matchStrings": [
-        "OTEL_OPERATOR_VERSION?(:|=|\\?=|:=|\\+=) ?\\\"?(?<currentValue>.+?)?\\\"?\\s"
+        "https:\/\/github\\.com\/open-telemetry\/opentelemetry-operator\/releases\/download\/(?<currentValue>.+?)?\/.*"
       ]
     }
   ]

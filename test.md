@@ -37,11 +37,6 @@ To install the Collector binary manually
 
 1. Download the [dynatrace-otel-collector](https://github.com/Dynatrace/dynatrace-otel-collector/releases/v0.19.0) for your operating system from GitHub.
 
-```sh
-DT_OTEL_COLLECTOR_VERSION=v0.19.0
-yum update
-```
-
 * dfs
   * `ghcr.io/dynatrace/dynatrace-otel-collector/dynatrace-otel-collector:v0.19.0`
 
