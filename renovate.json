@@ -67,10 +67,11 @@
     },
     {
       "customType": "regex",
+      "datasourceTemplate": "github-releases",
       "fileMatch": [
         "^test\\.md$"
       ],
-      "depNameTemplate": "otel-operator",
+      "depNameTemplate": "open-telemetry/opentelemetry-collector",
       "matchStrings": [
         "OTEL_OPERATOR_VERSION?(:|=|\\?=|:=|\\+=) ?\\\"?(?<currentValue>.+?)?\\\"?\\s"
       ]
