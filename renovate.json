@@ -8,8 +8,14 @@
   "ignorePaths": ["dynatrace/_codefiles", "dynatrace/_data", "managed/_codefiles", "managed/_data"],
   "commitMessagePrefix": "SPN-0 ",
   "reviewers": ["jakub.wadas", "filip.chmaj", "adham.sabry", "mikita.shunko", "Paul.Anderson"],
-  "enabledManagers": ["npm", "dockerfile", "kubernetes", "nvm", "regex"],
+  "enabledManagers": ["npm", "dockerfile", "kubernetes", "nvm", "custom.regex"],
   "ignoreDeps": ["registry.lab.dynatrace.org/spine/platform-tools"],
+  "packageRules": [
+    {
+      "matchPackagePrefixes": "@docstack/",
+      "customChangelogUrl": "https://bitbucket.lab.dynatrace.org/projects/SUS/repos/docstack/raw/CHANGELOG.md"
+    }
+  ],
   "npm": {
     "stabilityDays": 0
   },
