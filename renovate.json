@@ -20,7 +20,7 @@
       "matchPackageNames": [
         "Dynatrace/dynatrace-otel-collector"
       ],
-      "extractVersion": "^v(?version.*)$"
+      "extractVersion": "^v(?<version>.+?)$"
     }
   ],
   "npm": {
