@@ -14,6 +14,13 @@
     {
       "matchPackagePrefixes": "@docstack/",
       "customChangelogUrl": "https://bitbucket.lab.dynatrace.org/projects/SUS/repos/docstack/raw/CHANGELOG.md"
+    },
+    {
+      "matchManagers": ["custom.regex"],
+      "matchPackageNames": [
+        "Dynatrace/dynatrace-otel-collector"
+      ],
+      "extractVersion": "^v(?version.*)$"
     }
   ],
   "npm": {
@@ -24,8 +31,7 @@
       "customType": "regex",
       "datasourceTemplate": "github-releases",
       "fileMatch": [
-        "(^|\\/).*\/opentelemetry\/.*\\.ya?ml$",
-        "(^|\\/).*\/opentelemetry\/.*\\.md$"
+        "^test\\.md$"
       ],
       "depNameTemplate": "Dynatrace/dynatrace-otel-collector",
       "matchStrings": [
@@ -38,8 +44,7 @@
       "customType": "regex",
       "datasourceTemplate": "github-releases",
       "fileMatch": [
-        "(^|\\/).*\/opentelemetry\/.*\\.ya?ml$",
-        "(^|\\/).*\/opentelemetry\/.*\\.md$"
+        "^test\\.md$"
       ],
       "depNameTemplate": "open-telemetry/opentelemetry-operator",
       "matchStrings": [
