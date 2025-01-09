@@ -1,22 +1,45 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base",
+    "config:recommended",
     ":maintainLockFilesWeekly",
     ":semanticCommitsDisabled"
   ],
-  "ignorePaths": ["dynatrace/_codefiles", "dynatrace/_data", "managed/_codefiles", "managed/_data"],
+  "ignorePaths": [
+    "dynatrace/_codefiles",
+    "dynatrace/_data",
+    "managed/_codefiles",
+    "managed/_data"
+  ],
   "commitMessagePrefix": "SPN-0 ",
-  "reviewers": ["jakub.wadas", "filip.chmaj", "adham.sabry", "mikita.shunko", "Paul.Anderson"],
-  "enabledManagers": ["npm", "dockerfile", "kubernetes", "nvm", "custom.regex"],
-  "ignoreDeps": ["registry.lab.dynatrace.org/spine/platform-tools"],
+  "reviewers": [
+    "jakub.wadas",
+    "filip.chmaj",
+    "adham.sabry",
+    "mikita.shunko",
+    "Paul.Anderson"
+  ],
+  "enabledManagers": [
+    "npm",
+    "dockerfile",
+    "kubernetes",
+    "nvm",
+    "custom.regex"
+  ],
+  "ignoreDeps": [
+    "registry.lab.dynatrace.org/spine/platform-tools"
+  ],
   "packageRules": [
     {
-      "matchPackagePrefixes": "@docstack/",
-      "customChangelogUrl": "https://bitbucket.lab.dynatrace.org/projects/SUS/repos/docstack/raw/CHANGELOG.md"
+      "changelogUrl": "https://bitbucket.lab.dynatrace.org/projects/SUS/repos/docstack/raw/CHANGELOG.md",
+      "matchPackageNames": [
+        "@docstack/{/,}**"
+      ]
     },
     {
-      "matchManagers": ["custom.regex"],
+      "matchManagers": [
+        "custom.regex"
+      ],
       "matchPackageNames": [
         "Dynatrace/dynatrace-otel-collector"
       ],
@@ -24,7 +47,7 @@
     }
   ],
   "npm": {
-    "stabilityDays": 0
+    "minimumReleaseAge": null
   },
   "customManagers": [
     {
