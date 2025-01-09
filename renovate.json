@@ -14,6 +14,13 @@
     {
       "matchPackagePrefixes": "@docstack/",
       "customChangelogUrl": "https://bitbucket.lab.dynatrace.org/projects/SUS/repos/docstack/raw/CHANGELOG.md"
+    },
+    {
+      "matchManagers": ["custom.regex"],
+      "matchPackageNames": [
+        "Dynatrace/dynatrace-otel-collector"
+      ],
+      "extractVersion": "^v(?version.*)$"
     }
   ],
   "npm": {
@@ -24,25 +31,26 @@
       "customType": "regex",
       "datasourceTemplate": "github-releases",
       "fileMatch": [
-        "^test\\.md$"
+        "(^|\\/).*\/opentelemetry\/.*\\.ya?ml$",
+        "(^|\\/).*\/opentelemetry\/.*\\.md$"
       ],
       "depNameTemplate": "Dynatrace/dynatrace-otel-collector",
       "matchStrings": [
-        "\\\"*ghcr.io/dynatrace/dynatrace-otel-collector/dynatrace-otel-collector:(?<currentValue>.+?)?\\\"*($|\\s)",
-        "ghcr.io/dynatrace/dynatrace-otel-collector/dynatrace-otel-collector\\s* tag:\\s?\\\"*(?<currentValue>.+?)?\\\"*($|\\s)",
-        "\\\"*public.ecr.aws/dynatrace/dynatrace-otel-collector:(?<currentValue>.+?)?\\\"*($|\\s)",
-        "https://github.com/Dynatrace/dynatrace-otel-collector/releases/(?<currentValue>.+?)?($|\\s)"
+        "ghcr.io/dynatrace/dynatrace-otel-collector/dynatrace-otel-collector\\s* tag:\\s?\\\"*(?<currentValue>\\d+\\.\\d+\\.\\d+)?",
+        "dynatrace-otel-collector:(?<currentValue>\\d+\\.\\d+\\.\\d+)?",
+        "https://github.com/Dynatrace/dynatrace-otel-collector/releases/v(?<currentValue>\\d+\\.\\d+\\.\\d+)?"
       ]
     },
     {
       "customType": "regex",
       "datasourceTemplate": "github-releases",
       "fileMatch": [
-        "^test\\.md$"
+        "(^|\\/).*\/opentelemetry\/.*\\.ya?ml$",
+        "(^|\\/).*\/opentelemetry\/.*\\.md$"
       ],
       "depNameTemplate": "open-telemetry/opentelemetry-operator",
       "matchStrings": [
-        "https://github\\.com/open-telemetry/opentelemetry-operator/releases/download/(?<currentValue>.+?)?/.*"
+        "https://github\\.com/open-telemetry/opentelemetry-operator/releases/download/(?<currentValue>v\\d+\\.\\d+\\.\\d+)?"
       ]
     }
   ]
