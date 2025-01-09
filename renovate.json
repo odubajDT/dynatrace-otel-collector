@@ -14,13 +14,6 @@
     {
       "matchPackagePrefixes": "@docstack/",
       "customChangelogUrl": "https://bitbucket.lab.dynatrace.org/projects/SUS/repos/docstack/raw/CHANGELOG.md"
-    },
-    {
-      "matchManagers": ["custom.regex"],
-      "matchPackageNames": [
-        "Dynatrace/dynatrace-otel-collector"
-      ],
-      "extractVersion": "^v(?version.*)$"
     }
   ],
   "npm": {
