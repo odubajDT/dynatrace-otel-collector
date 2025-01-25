@@ -3,7 +3,7 @@
 fdsfds
 
 ```shell
-kubectl apply -f https://github.com/open-telemetry/opentelemetry-operator/releases/download/v0.114.0/opentelemetry-operator.yaml
+kubectl apply -f https://github.com/open-telemetry/opentelemetry-operator/releases/download/v0.117.0/opentelemetry-operator.yaml
 ```
 
 dsds
