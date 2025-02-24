@@ -2,52 +2,76 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended",
-    "schedule:nonOfficeHours",
-    "customManagers:githubActionsVersions",
-    "customManagers:makefileVersions"
+    ":maintainLockFilesWeekly",
+    ":semanticCommitsDisabled"
   ],
-  "labels": ["dependencies"],
-  "prConcurrentLimit": 25,
-  "minimumReleaseAge": "3 days",
-  "timezone": "Europe/Vienna",
-  "rebaseWhen": "conflicted",
-  "postUpdateOptions": [
-    "gomodTidy",
-    "gomodMassage"
+  "ignorePaths": [
+    "dynatrace/_codefiles",
+    "dynatrace/_data",
+    "managed/_codefiles",
+    "managed/_data"
+  ],
+  "commitMessagePrefix": "SPN-0 ",
+  "reviewers": [
+    "jakub.wadas",
+    "filip.chmaj",
+    "adham.sabry",
+    "mikita.shunko",
+    "Paul.Anderson"
+  ],
+  "enabledManagers": [
+    "npm",
+    "dockerfile",
+    "kubernetes",
+    "nvm",
+    "custom.regex"
+  ],
+  "ignoreDeps": [
+    "registry.lab.dynatrace.org/spine/platform-tools"
   ],
   "packageRules": [
     {
-      "matchPackagePatterns": ["^(go\\.opentelemetry\\.io\/collector|github\\.com\/open-telemetry\/opentelemetry-collector-contrib)\/"],
-      "matchPackageNames": ["open-telemetry/opentelemetry-collector-contrib"],
-      "groupName": "OpenTelemetry Collector"
+      "changelogUrl": "https://bitbucket.lab.dynatrace.org/projects/SUS/repos/docstack/raw/CHANGELOG.md",
+      "matchPackageNames": [
+        "@docstack/{/,}**"
+      ]
     },
     {
-      "matchDatasources": ["golang-version"],
-      "rangeStrategy": "bump"
+      "matchManagers": [
+        "custom.regex"
+      ],
+      "matchPackageNames": [
+        "Dynatrace/dynatrace-otel-collector"
+      ],
+      "extractVersion": "^v(?<version>.+?)$"
     }
   ],
+  "npm": {
+    "minimumReleaseAge": null
+  },
   "customManagers": [
     {
       "customType": "regex",
+      "datasourceTemplate": "github-releases",
       "fileMatch": [
-        "(^|\\/)Makefile$",
-        "(^|\\/)Dockerfile",
-        "(^|\\/).*\\.ya?ml$",
-        "(^|\\/).*\\.toml$",
-        "(^|\\/).*\\.sh$"
+        "^test\\.md$"
       ],
+      "depNameTemplate": "Dynatrace/dynatrace-otel-collector",
       "matchStrings": [
-        "# renovate: datasource=(?<datasource>.+?) depName=(?<depName>.+?)\\s.*(:|=|\\?=|:=|\\+=) ?\\\"?(?<currentValue>.+?)?\\\"?\\s"
+        "ghcr.io/dynatrace/dynatrace-otel-collector/dynatrace-otel-collector\\s* tag:\\s?\\\"*(?<currentValue>\\d+\\.\\d+\\.\\d+)?",
+        "dynatrace-otel-collector:(?<currentValue>\\d+\\.\\d+\\.\\d+)?",
+        "https://github.com/Dynatrace/dynatrace-otel-collector/releases/v(?<currentValue>\\d+\\.\\d+\\.\\d+)?"
       ]
     },
     {
       "customType": "regex",
+      "datasourceTemplate": "github-releases",
       "fileMatch": [
-        "^manifest.yaml$"
+        "^test\\.md$"
       ],
-      "datasourceTemplate": "go",
+      "depNameTemplate": "open-telemetry/opentelemetry-operator",
       "matchStrings": [
-        "- gomod: (?<depName>(go\\.opentelemetry\\.io\/collector|github\\.com\/open-telemetry\/opentelemetry-collector-contrib|github\\.com\/dynatrace\/dynatrace-otel-collector)\/([A-Za-z0-9]+\/)*[A-Za-z0-9]+) (?<currentValue>v\\d+\\.\\d+\\.\\d+)\\n"
+        "https://github\\.com/open-telemetry/opentelemetry-operator/releases/download/(?<currentValue>v\\d+\\.\\d+\\.\\d+)?"
       ]
     }
   ]
