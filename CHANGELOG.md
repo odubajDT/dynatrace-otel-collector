@@ -4,6 +4,224 @@
 
 <!-- next version -->
 
+## v0.23.0
+
+This release includes version 0.119.0 of the upstream Collector components.
+
+The individual upstream Collector changelogs can be found here:
+
+v0.119.0:
+
+- <https://github.com/open-telemetry/opentelemetry-collector/releases/tag/v0.119.0>
+- <https://github.com/open-telemetry/opentelemetry-collector-contrib/releases/tag/v0.119.0>
+
+<details>
+<summary>Highlights from the upstream Collector changelog</summary>
+
+### 🛑 Breaking changes 🛑
+
+- `exporterhelper`: Change queue to embed the async consumers. ([#12242](https://github.com/open-telemetry/opentelemetry-collector/pull/12242))
+- `cmd/mdatagen`: Allow passing OTel Metric SDK options to the generated `SetupTelemetry` function. ([#12166](https://github.com/open-telemetry/opentelemetry-collector/pull/12166))
+- `exporterhelper`: Rename exporter span signal specific attributes (e.g. "sent_spans" / "send_failed_span") to "items.sent" / "items.failed". ([#12165](https://github.com/open-telemetry/opentelemetry-collector/pull/12165))
+- `cmd/mdatagen`: Remove dead field `telemetry::level` ([#12144](https://github.com/open-telemetry/opentelemetry-collector/pull/12144))
+- `exporterhelper`: Change exporter ID to be a Span level attribute instead on each event. ([#12164](https://github.com/open-telemetry/opentelemetry-collector/pull/12164))
+  This does not have an impact on the level of information emitted, but on the structure of the Span.
+- `cmd/mdatagen`: Remove `level` field from metrics definition ([#12145](https://github.com/open-telemetry/opentelemetry-collector/pull/12145))
+  This mechanism will be added back once a new views mechanism is implemented.
+
+### 💡 Enhancements 💡
+
+- `configtls`: Allow users to mention their preferred curve types for ECDHE handshake ([#12174](https://github.com/open-telemetry/opentelemetry-collector/pull/12174))
+- `otelcol`: Adds support for listing config providers in components command's output ([#11570](https://github.com/open-telemetry/opentelemetry-collector/pull/11570))
+- `pdata/pprofile`: Add new helper method `FromAttributeIndices` to build a `pcommon.Map` out of `AttributeIndices`. ([#12176](https://github.com/open-telemetry/opentelemetry-collector/pull/12176))
+- `component`: Allow `component.ValidateConfig` to recurse through all fields in a config object ([#11524](https://github.com/open-telemetry/opentelemetry-collector/pull/11524))
+- `component`: Show path to invalid config in errors returned from `component.ValidateConfig` ([#12108](https://github.com/open-telemetry/opentelemetry-collector/pull/12108))
+
+- `processor/transformprocessor`: Add support for flat configuration style. ([#29017](https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/29017))
+  The flat configuration style allows users to configure statements by providing a list of statements instead of a
+  structured configuration map. The statement's context is expressed by adding the context's name prefix to path names,
+  which are used to infer and to select the appropriate context for the statement.
+
+- `resourcedetectionprocessor`: Expose additional configuration parameters for the AWS metadata client used by the EC2 detector ([#35936](https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/35936))
+  In some cases, you might need to change the behavior of the AWS metadata client from the [standard retryer](https://docs.aws.amazon.com/sdk-for-go/v2/developer-guide/configure-retries-timeouts.html)
+  
+  By default, the client retries 3 times with a max backoff delay of 20s.
+  
+  We offer a limited set of options to override those defaults specifically, such that you can set the client to retry 10 times, for up to 5 minutes, for example:
+  ```yaml
+  processors:
+    resourcedetection/ec2:
+      detectors: ["ec2"]
+      ec2:
+        max_attempts: 10
+        max_backoff: 5m
+  ```
+  
+- `cumulativetodeltaprocessor`: Add metric type filter for cumulativetodelta processor ([#33673](https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/33673))
+- `resourcedetectionprocessor`: Add `fail_on_missing_metadata` option on EC2 detector ([#35936](https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/35936))
+  If the EC2 metadata endpoint is unavailable, the EC2 detector by default ignores the error.
+  By setting `fail_on_missing_metadata` to true on the detector, the user will now trigger an error explicitly,
+  which will stop the collector from starting.
+
+- `resourcedetectionprocessor`: The `gcp` resource detector will now detect resource attributes identifying a GCE instance's managed instance group. ([#36142](https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/36142))
+- `jaegerreceiver`: Log the endpoints of different servers started by jaegerreceiver ([#36961](https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/36961))
+  This change logs the endpoints of different servers started by jaegerreceiver. It simplifies debugging by ensuring log messages match configuration settings.
+  
+- `receiver/hostmetrics`: Added support for tracking process.uptime ([#36667](https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/36667))
+- `processor/transformprocessor`: Replace parser collection implementations with `ottl.ParserCollection` and add initial support for expressing statement's context via path names. ([#29017](https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/29017))
+- `prometheusreceiver`: Add `receiver.prometheusreceiver.UseCollectorStartTimeFallback` featuregate for the start time metric adjuster to use the collector start time as an approximation of process start time as a fallback. ([#36364](https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/36364))
+- `tailsamplingprocessor`: Reworked the consume traces, sampling decision, and policy loading paths to improve performance and readability ([#37560](https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/37560))
+
+### 🧰 Bug fixes 🧰
+
+- `exporterhelper`: Fix bug that the exporter with new batcher may have been marked as non mutation. ([#12239](https://github.com/open-telemetry/opentelemetry-collector/pull/12239))
+  Only affects users that manually turned on `exporter.UsePullingBasedExporterQueueBatcher` featuregate.
+- `confighttp`: confighttp.ToServer now sets ErrorLog with a default logger backed by Zap ([#11820](https://github.com/open-telemetry/opentelemetry-collector/pull/11820))
+
+  This change ensures that the http.Server's ErrorLog is correctly set using Zap's logger at the error level, addressing the issue of error logs being printed using a different logger.
+  
+- `exporterhelper`: Fix context propagation for DisabledBatcher ([#12231](https://github.com/open-telemetry/opentelemetry-collector/pull/12231))
+- `mdatagen`: Fix bug where Histograms were marked as not supporting temporaly aggregation ([#12168](https://github.com/open-telemetry/opentelemetry-collector/pull/12168))
+- `exporterhelper`: Fix MergeSplit issue that ignores the initial message size. ([#12257](https://github.com/open-telemetry/opentelemetry-collector/pull/12257))
+- `filelogreceiver`: Fix issue where flushed tokens could be truncated. ([#35042](https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/35042))
+- `k8sattributesprocessor`: Wait for the other informers to complete their initial sync before starting the pod informers ([#37056](https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/37056))
+- `pkg/stanza`: Fix default source identifier in recombine operator ([#37210](https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/37210))
+  Its defualt value is now aligned with the semantic conventions: `attributes["log.file.path"]`
+  
+- `tailsamplingprocessor`: Fixed sampling decision metrics `otelcol_processor_tail_sampling_sampling_trace_dropped_too_early` and `otelcol_processor_tail_sampling_sampling_policy_evaluation_error_total`, these were sometimes overcounted. ([#37212](https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/37212))
+  As a result of this change non-zero values of `otelcol_processor_tail_sampling_sampling_trace_dropped_too_early`
+  and `otelcol_processor_tail_sampling_sampling_policy_evaluation_error_total` metrics will be lower.
+  Before this fix, errors got counted several times depending on the amount of traces being processed
+  that tick and where in the batch the error happened.
+  Zero values are unaffected.
+
+---
+
+</details>
+
+## v0.22.0
+
+This release includes version 0.118.0 of the upstream Collector components.
+
+The individual upstream Collector changelogs can be found here:
+
+v0.118.0:
+
+- <https://github.com/open-telemetry/opentelemetry-collector/releases/tag/v0.118.0>
+- <https://github.com/open-telemetry/opentelemetry-collector-contrib/releases/tag/v0.118.0>
+
+<details>
+<summary>Highlights from the upstream Collector changelog</summary>
+
+### 🛑 Breaking changes 🛑
+
+- `pkg/stanza`: Move `filelog.container.removeOriginalTimeField` feature gate to stable (https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/33389)
+- `pkg/ottl`: Support dynamic indexing of maps and slices. (https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/36644)
+
+### 💡 Enhancements 💡
+
+- `exporterhelper`: Add blocking option to control queue behavior when full (https://github.com/open-telemetry/opentelemetry-collector/pull/12090)
+- `debugexporter`: Add EventName to debug exporter for Logs. EventName was added as top-level field in the LogRecord from 1.5.0 of proto definition. (https://github.com/open-telemetry/opentelemetry-collector/pull/11966)
+- `confighttp`: Added support for configuring compression levels. (https://github.com/open-telemetry/opentelemetry-collector/pull/10467)
+  A new configuration option called CompressionParams has been added to confighttp.
+  This allows users to configure the compression levels for the confighttp client.
+- `exporterhelper`: Change the memory queue implementation to not pre-allocate capacity objects. (https://github.com/open-telemetry/opentelemetry-collector/pull/12070)
+  This change improves memory usage of the collector under low utilization and is a prerequisite for supporting different other size limitations (number of items, bytes).
+- `pkg/ottl`: Add the `Nanosecond` converter to return the nanosecond component from the specified time.Time (https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/37042)
+- `pkg/ottl`: Add the `Second` converter to return the second component from the specified time.Time (https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/37042)
+- `pkg/ottl`: Enhanced error messages for invalid cache access and introduced options to configure their values within the OTTL contexts. (https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/29017)
+- `pkg/ottl`: Add the `FormatTime` function to convert `time.Time` values to human-readable strings (https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/36870)
+- `resourcedetectionprocessor`: This enhancement detects AWS EKS cloud account ID (https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/37179)
+- `resourcedetectionprocessor`: Introduce kubeadm detector to retrieve local cluster name. (https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/35116)
+- `k8sattributesprocessor`: For pods with only one container, the `container.id` and `k8s.container.name` are not longer required in the resource attributes to add the container attributes (https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/34189)
+- `tailsamplingprocessor`: Added debug logging to the sampling decision caches. (https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/37038)
+- `tailsamplingprocessor`: Improved not sampled decision cache usage and deleting traces from the internal map when they are in a decision cache. (https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/37189)
+
+### 🧰 Bug fixes 🧰
+
+- `k8sattributesprocessor`: Ensure the pods gathered by the processor contain the information about their related replica sets and deployments after the initial sync (https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/37056)
+- `pkg/ottl`: Fix bug with `replace_all_matches` and `replace_all_patterns` that caused non-string values to be changed to empty string when matching against empty string. (https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/37071)
+- `tailsamplingprocessor`: Fixed sampling policy evaluation debug logging batch metrics (e.g. sampled). (https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/37040)
+- `tailsamplingprocessor`: Late span age histogram should include sampled traces. (https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/37180)
+
+---
+
+</details>
+
+#### Dynatrace distribution changelog:
+
+### 💡 Enhancements 💡
+
+- `release`: Add builds for ppc64le and s390x architectures (#424)
+
+## v0.21.0
+
+This release includes version v0.117.0 of the upstream Collector components.
+
+The individual upstream Collector changelogs can be found here:
+
+v0.117.0:
+
+- <https://github.com/open-telemetry/opentelemetry-collector/releases/tag/v0.117.0>
+- <https://github.com/open-telemetry/opentelemetry-collector-contrib/releases/tag/v0.117.0>
+
+<details>
+<summary>Highlights from the upstream Collector changelog</summary>
+
+### 🛑 Breaking changes 🛑
+
+- `otelcol`: Remove warnings when 0.0.0.0 is used (https://github.com/open-telemetry/opentelemetry-collector/pull/11713, https://github.com/open-telemetry/opentelemetry-collector/pull/8510)
+- `pkg/ottl`: removed the ability to reference entire parent objects. (https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/36872)
+  Statements like `set(cache["resource"], resource)` in non-resource contexts will no longer work.
+
+### 💡 Enhancements 💡
+
+- `pkg/ottl`: Add a new ottl trim function that trims leading and trailing characters from a string (default- whitespace). (https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/34100)
+- `statsdreceiver`: Add UDS support to statsdreceiver (https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/21385)
+- `tailsamplingprocessor`: Support hot sampling policy loading (https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/37014)
+
+### 🧰 Bug fixes 🧰
+
+- `internal/sharedcomponent`: Fixed bug where sharedcomponent would use too much memory remembering all the previously reported statuses (https://github.com/open-telemetry/opentelemetry-collector/pull/11826)
+- `pkg/ottl`: fix handling of nested maps within slices in the `flatten` function (https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/36162)
+
+---
+
+</details>
+
+v0.116.0:
+
+- <https://github.com/open-telemetry/opentelemetry-collector/releases/tag/v0.116.0>
+- <https://github.com/open-telemetry/opentelemetry-collector-contrib/releases/tag/v0.116.0>
+
+<details>
+<summary>Highlights from the upstream Collector changelog</summary>
+
+### 🛑 Breaking changes 🛑
+
+- `pdata/pprofile`: Remove deprecated `Profile.EndTime` and `Profile.SetEndTime` methods. (https://github.com/open-telemetry/opentelemetry-collector/pull/11796)
+- `processor/tailsampling`: Reverts https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/33671, allowing for composite policies to specify inverted clauses in conjunction with other policies. This is a change bringing the previous state into place, breaking users who rely on what was introduced as part of https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/33671. (https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/34085)
+
+### 💡 Enhancements 💡
+
+- `xconfighttp`: Add WithOtelHTTPOptions to experimental module xconfighttp (https://github.com/open-telemetry/opentelemetry-collector/pull/11770)
+- `pkg/ottl`: GetXML Converter now supports selecting text, CDATA, and attribute (value) content. (https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/36821)
+- `pkg/pdatatest`: Add support for Profiles signal comparison. (https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/36232)
+- `testbed`: Add batcher performance tests (https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/36206)
+- `testbed`: add options for retry/storage for filelog sender (https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/36781)
+
+### 🧰 Bug fixes 🧰
+
+- `exporterhelper`: Fix memory leak at exporter shutdown (https://github.com/open-telemetry/opentelemetry-collector/pull/11401)
+- `sharedcomponent`: Remove race-condition and cleanup locking (https://github.com/open-telemetry/opentelemetry-collector/pull/11819)
+- `receiver/prometheusreceiver`: Metric adjuster no longer assumes that all metrics from a scrape come from the same resource (https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/36477)
+- `parseutils`: Handle escaped quotes when parsing pairs using SplitString. (https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/36176)
+- `jaegerreceiver`: Remove ineffectual warning from jaegerreceiver (https://github.com/open-telemetry/opentelemetry-collector-contrib/pull/35894)
+
+---
+
+</details>
+
 ## v0.20.0
 
 This release includes version 0.115.0 of the upstream Collector components.
