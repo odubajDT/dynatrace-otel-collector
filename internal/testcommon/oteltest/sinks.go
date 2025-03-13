@@ -13,6 +13,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"go.opentelemetry.io/collector/component"
 	"go.opentelemetry.io/collector/component/componenttest"
 	"go.opentelemetry.io/collector/consumer/consumertest"
 	"go.opentelemetry.io/collector/pdata/pcommon"
@@ -78,7 +79,7 @@ func StartUpSinks(t *testing.T, sinks ReceiverSinks) func() {
 		fMetric := otlpreceiver.NewFactory()
 		cfg := fMetric.CreateDefaultConfig().(*otlpreceiver.Config)
 		setupReceiverPorts(cfg, sinks.Metrics.Ports)
-		metricsRcvr, err := fMetric.CreateMetrics(context.Background(), receivertest.NewNopSettings(), cfg, sinks.Metrics.Consumer)
+		metricsRcvr, err := fMetric.CreateMetrics(context.Background(), receivertest.NewNopSettings(component.MustNewType("otlp")), cfg, sinks.Metrics.Consumer)
 		require.NoError(t, err, "failed creating metrics receiver")
 		require.NoError(t, metricsRcvr.Start(context.Background(), componenttest.NewNopHost()))
 		shutDownFuncs = append(shutDownFuncs, func() {
@@ -89,7 +90,7 @@ func StartUpSinks(t *testing.T, sinks ReceiverSinks) func() {
 		fTrace := otlpreceiver.NewFactory()
 		cfg := fTrace.CreateDefaultConfig().(*otlpreceiver.Config)
 		setupReceiverPorts(cfg, sinks.Traces.Ports)
-		tracesRcvr, err := fTrace.CreateTraces(context.Background(), receivertest.NewNopSettings(), cfg, sinks.Traces.Consumer)
+		tracesRcvr, err := fTrace.CreateTraces(context.Background(), receivertest.NewNopSettings(component.MustNewType("otlp")), cfg, sinks.Traces.Consumer)
 		require.NoError(t, err, "failed creating traces receiver")
 		require.NoError(t, tracesRcvr.Start(context.Background(), componenttest.NewNopHost()))
 		shutDownFuncs = append(shutDownFuncs, func() {
@@ -100,7 +101,7 @@ func StartUpSinks(t *testing.T, sinks ReceiverSinks) func() {
 		fLog := otlpreceiver.NewFactory()
 		cfg := fLog.CreateDefaultConfig().(*otlpreceiver.Config)
 		setupReceiverPorts(cfg, sinks.Logs.Ports)
-		logsRcvr, err := fLog.CreateLogs(context.Background(), receivertest.NewNopSettings(), cfg, sinks.Logs.Consumer)
+		logsRcvr, err := fLog.CreateLogs(context.Background(), receivertest.NewNopSettings(component.MustNewType("otlp")), cfg, sinks.Logs.Consumer)
 		require.NoError(t, err, "failed creating logs receiver")
 		require.NoError(t, logsRcvr.Start(context.Background(), componenttest.NewNopHost()))
 		shutDownFuncs = append(shutDownFuncs, func() {
@@ -141,6 +142,15 @@ func WaitForTraces(t *testing.T, entriesNum int, tc *consumertest.TracesSink) {
 	}, time.Duration(timeoutMinutes)*time.Minute, 1*time.Second,
 		"failed to receive %d entries,  received %d traces in %d minutes", entriesNum,
 		len(tc.AllTraces()), timeoutMinutes)
+}
+
+func WaitForLogs(t *testing.T, entriesNum int, tc *consumertest.LogsSink) {
+	timeoutMinutes := 5
+	require.Eventuallyf(t, func() bool {
+		return len(tc.AllLogs()) > entriesNum
+	}, time.Duration(timeoutMinutes)*time.Minute, 1*time.Second,
+		"failed to receive %d entries,  received %d logs in %d minutes", entriesNum,
+		len(tc.AllLogs()), timeoutMinutes)
 }
 
 func ScanTracesForAttributes(t *testing.T, ts *consumertest.TracesSink, expectedService string, kvs map[string]ExpectedValue, scopeSpanAttrs []map[string]ExpectedValue) {

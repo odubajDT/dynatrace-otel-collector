@@ -10,14 +10,14 @@ inputs:
     required: false
     description: "Kubernetes version that should be used"
     # renovate: datasource=github-releases depName=kubernetes/kubernetes
-    default: "v1.27.11"
+    default: "v1.32.2"
   cluster-name:
     required: false
     description: "Name of the kind cluster"
     default: "kind"
 env:
   # renovate: datasource=golang-version depName=go
-  GO_VERSION: "1.23.5"
+  GO_VERSION: "1.23.6"
 runs:
   using: "composite"
   steps:

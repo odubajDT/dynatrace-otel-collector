@@ -33,7 +33,7 @@ making it easier to diagnose and resolve problems related to OTLP data handling.
 
 **Note:**
 
-Sending data to Jaeger receiver is not supported in this CLI tool. For more information about the reasoning for this and setting up a debug environmant for Jaeger receiver, please see [here](./commands/jaeger/README.md).
+Sending data to Jaeger or Netflow receiver is not supported in this CLI tool. For more information about the reasoning for this and setting up a debug environment for these receivers, please see [jaeger](./commands/jaeger/README.md) and [netflow](./commands/netflow/README.md) documentation.
 
 ## Building
 
@@ -85,13 +85,19 @@ The tool accepts the following input parameters:
 ./data-ingest --send --input-format fluent --input-file $(pwd)/commands/fluent/testdata/msg.json --collector-url localhost:8006
 ```
 
+1. Set up a Prometheus server for the Collector to scrape
+
+```shell
+./data-ingest --send --input-format prometheus --input-file $(pwd)/commands/prometheus/testdata/metrics
+```
+
 1. Send Zipkin data to a collector:
 
 ```shell
 ./data-ingest --send --input-format zipkin --input-file $(pwd)/commands/zipkin/testdata/sample_v2.json  --otlp-signal-type traces --collector-url http://0.0.0.0:9411 --receive --output-file received_traces.json --receiver-port 4319 --receiver-type http
 ```
 
-1. Only receive data (useful for debugging `hostmetrics`, `jaeger` or `filelog` receivers):
+1. Only receive data (useful for debugging `hostmetrics`, `jaeger`, `netflow` or `filelog` receivers):
 
 ```shell
 ./data-ingest --receive --output-file received.json --receiver-port 4319 --receiver-type http

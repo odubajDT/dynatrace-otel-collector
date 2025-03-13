@@ -8,7 +8,7 @@ on:
 
 env:
   # renovate: datasource=golang-version depName=go
-  GO_VERSION: "1.23.5"
+  GO_VERSION: "1.23.6"
 
 jobs:
   build:
@@ -46,25 +46,35 @@ jobs:
       - name: Touch tools
         run: |
           mkdir -p .tools
-      - name: Login to GitHub Package Registry
+      # - name: Login to GitHub Package Registry
+      #   uses: docker/login-action@v3
+      #   with:
+      #     registry: ghcr.io
+      #     username: ${{ github.repository_owner }}
+      #     password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Login to DockerHub Registry
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-          aws-region: us-east-1
+      # - name: Configure aws credentials
+      #   uses: aws-actions/configure-aws-credentials@v4
+      #   with:
+      #     role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+      #     aws-region: us-east-1
 
-      - name: Login to Amazon ECR
-        uses: aws-actions/amazon-ecr-login@v2
-        with:
-          registry-type: public
+      # - name: Login to Amazon ECR
+      #   uses: aws-actions/amazon-ecr-login@v2
+      #   with:
+      #     registry-type: public
+
+      - name: Extract changelog
+        run: awk '/<!-- next version -->/,/<!-- previous-version -->/' CHANGELOG.md > ./release-notes.md
 
       - name: Create release for version tag
         run: make release
         env:
+          RELEASE_NOTES: "./release-notes.md"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

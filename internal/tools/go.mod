@@ -1,11 +1,11 @@
 module github.com/Dynatrace/dynatrace-otel-collector/internal/tools
 
-go 1.23.5
+go 1.23.6
 
 require (
 	github.com/goreleaser/goreleaser/v2 v2.7.0
-	go.opentelemetry.io/build-tools/chloggen v0.18.0
-	go.opentelemetry.io/collector/cmd/builder v0.120.0
+	go.opentelemetry.io/build-tools/chloggen v0.20.0
+	go.opentelemetry.io/collector/cmd/builder v0.121.0
 )
 
 require (
@@ -139,7 +139,7 @@ require (
 	github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376 // indirect
 	github.com/go-git/go-billy/v5 v5.6.1 // indirect
 	github.com/go-git/go-git/v5 v5.13.1 // indirect
-	github.com/go-jose/go-jose/v4 v4.0.4 // indirect
+	github.com/go-jose/go-jose/v4 v4.0.5 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-openapi/analysis v0.23.0 // indirect
@@ -271,7 +271,7 @@ require (
 	github.com/spaolacci/murmur3 v1.1.0 // indirect
 	github.com/spf13/afero v1.11.0 // indirect
 	github.com/spf13/cast v1.7.0 // indirect
-	github.com/spf13/cobra v1.8.1 // indirect
+	github.com/spf13/cobra v1.9.1 // indirect
 	github.com/spf13/pflag v1.0.6 // indirect
 	github.com/spf13/viper v1.19.0 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
