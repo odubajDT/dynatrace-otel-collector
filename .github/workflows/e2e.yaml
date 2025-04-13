@@ -189,7 +189,7 @@ jobs:
     if: failure() && github.event_name == 'push'
     steps:
       - name: Slack Notification
-        uses: rtCamp/action-slack-notify@v2.3.2
+        uses: rtCamp/action-slack-notify@v2.3.3
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_TITLE: "DT OTel Collector Distro - Combined Load Test Failure"
@@ -203,7 +203,7 @@ jobs:
     if: failure() && github.event_name == 'push'
     steps:
       - name: Slack Notification
-        uses: rtCamp/action-slack-notify@v2.3.2
+        uses: rtCamp/action-slack-notify@v2.3.3
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_TITLE: "DT OTel Collector Distro - E2E Test Failure"
