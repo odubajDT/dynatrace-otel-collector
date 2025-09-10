@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: collector
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: collector
+      app.kubernetes.io/instance: collector
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: collector
+        app.kubernetes.io/instance: collector
+    spec:
+      serviceAccountName: collector
+      containers:
+        - name: collector
+          args:
+            - --config=/conf/relay.yaml
+          image: otel/opentelemetry-collector-contrib:latest
+          env:
+            - name: K8S_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: status.podIP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 13133
+            initialDelaySeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 13133
+            initialDelaySeconds: 3
+          resources:
+            limits:
+              cpu: 128m
+              memory: 256Mi
+          volumeMounts:
+            - mountPath: /conf
+              name: collector-configmap
+      volumes:
+        - name: collector-configmap
+          configMap:
+            name: collector-config
+            items:
+              - key: relay
+                path: relay.yaml
