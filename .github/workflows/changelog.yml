@@ -86,7 +86,7 @@ jobs:
         run: cat changelog_preview.md
 
       - name: Run Lychee
-        uses: lycheeverse/lychee-action@v2.3.0
+        uses: lycheeverse/lychee-action@v2.7.0
         with:
           args: "--verbose --no-progress ./changelog_preview.md"
           failIfEmpty: false
