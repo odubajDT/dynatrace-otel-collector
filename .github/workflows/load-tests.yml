@@ -29,7 +29,7 @@ jobs:
 
       - name: Cache tools
         id: cache-tools
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: .tools
           key: load-test-tools-${{ runner.os }}-${{ hashFiles('internal/tools/go.sum') }}
@@ -42,7 +42,7 @@ jobs:
 
       - name: Cache collector source code
         id: cache-collector-source
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: build
           key: load-test-build-${{ runner.os }}-${{ hashFiles('manifest.yaml', 'internal/confmap/provider/eecprovider') }}
@@ -52,7 +52,7 @@ jobs:
         run: make generate
 
       - name: Cache Go modules
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             internal/oteltestbedcol
@@ -84,7 +84,7 @@ jobs:
 
       - name: Cache tools
         id: cache-tools
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: .tools
           key: load-test-tools-${{ runner.os }}-${{ hashFiles('internal/tools/go.sum') }}
