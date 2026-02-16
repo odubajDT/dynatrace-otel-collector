@@ -1,6 +1,6 @@
 module github.com/Dynatrace/dynatrace-otel-collector/internal/data-ingest-cli
 
-go 1.23.6
+go 1.24.0
 
 require (
 	github.com/fluent/fluent-logger-golang v1.9.0
@@ -9,12 +9,13 @@ require (
 	go.opentelemetry.io/collector/config/confignet v1.27.0
 	go.opentelemetry.io/collector/config/configtls v1.27.0
 	go.opentelemetry.io/collector/pdata v1.27.0
-	google.golang.org/grpc v1.71.0
+	google.golang.org/grpc v1.79.1
 )
 
 require (
 	github.com/apache/thrift v0.21.0 // indirect
 	github.com/bmizerany/assert v0.0.0-20160611221934-b7ed37b82869 // indirect
+	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/fsnotify/fsnotify v1.8.0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/jaegertracing/jaeger-idl v0.5.0 // indirect
@@ -28,12 +29,12 @@ require (
 	github.com/tinylib/msgp v1.2.5 // indirect
 	go.opentelemetry.io/collector/config/configopaque v1.27.0 // indirect
 	go.opentelemetry.io/collector/semconv v0.121.0 // indirect
-	go.opentelemetry.io/otel v1.34.0 // indirect
-	go.opentelemetry.io/otel/trace v1.34.0 // indirect
+	go.opentelemetry.io/otel v1.39.0 // indirect
+	go.opentelemetry.io/otel/trace v1.39.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	golang.org/x/net v0.34.0 // indirect
-	golang.org/x/sys v0.30.0 // indirect
-	golang.org/x/text v0.22.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250115164207-1a7da9e5054f // indirect
-	google.golang.org/protobuf v1.36.5 // indirect
+	golang.org/x/net v0.48.0 // indirect
+	golang.org/x/sys v0.39.0 // indirect
+	golang.org/x/text v0.32.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20251202230838-ff82c1b0f217 // indirect
+	google.golang.org/protobuf v1.36.10 // indirect
 )
