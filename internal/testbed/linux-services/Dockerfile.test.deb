@@ -1,5 +1,5 @@
 # A debian image with systemd enabled
-FROM debian:13@sha256:2c91e484d93f0830a7e05a2b9d92a7b102be7cab562198b984a84fdbc7806d91
+FROM debian:13@sha256:f324c7ff54321e8d9c588493a20244965938ce0aa50bbd1022d38010e9ffc4b1
 
 ENV container docker
 ENV DEBIAN_FRONTEND noninteractive
