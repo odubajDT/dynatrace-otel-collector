@@ -27,7 +27,7 @@ runs:
   steps:
 
     - name: Setup Go
-      uses: actions/setup-go@7a3fe6cf4cb3a834922a1244abfce67bcef6a0c5 # v6.2.0
+      uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6.5.0
       with:
         go-version: ${{ env.GO_VERSION }}
         check-latest: true
@@ -35,7 +35,7 @@ runs:
 
     - name: Cache tools
       id: cache-tools
-      uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
+      uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
       with:
         path: .tools
         key: e2e-tools-${{ runner.os }}-${{ hashFiles('internal/tools/go.sum') }}
@@ -49,7 +49,7 @@ runs:
         make install-tools
 
     - name: "Create single kind Cluster"
-      uses: helm/kind-action@ef37e7f390d99f746eb8b610417061a60e82a6cc # v1.14.0
+      uses: helm/kind-action@06c1ae10762d3b9c1644e7fe69596ae519e015a2 # v1.15.0
       with:
         cluster_name: ${{ inputs.cluster-name }}
         version: ${{ inputs.kind-version }}
